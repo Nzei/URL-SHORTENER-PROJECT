@@ -1,21 +1,46 @@
 package com.uche.url_shortener.controller;
 
-import com.uche.url_shortener.utility.Utils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.uche.url_shortener.model.UrlShortenerRequest;
+import com.uche.url_shortener.model.UrlShortenerResponse;
+import com.uche.url_shortener.service.UrlShortenerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@Controller
-@RequestMapping("/url")
+@RestController
+@RequestMapping("/api")
 public class ShortenerController {
+    @Value("${get.request.path}")
+    String getMappingRequestPath;
+
+    @Autowired
+    private UrlShortenerService urlShortenerService;
 
 
-
-    @GetMapping("/browser")
-    public void browserVersion (HttpServletRequest httpServletRequest) {
-
-        System.out.println(Utils.getBrowserName(httpServletRequest));
+    @PostMapping("${get.request.path}")
+    public UrlShortenerResponse generateUrl (@RequestBody UrlShortenerRequest urlShortenerRequest, HttpServletRequest httpServletRequest) {
+        String longUrl = urlShortenerRequest.getLongUrl();
+        urlShortenerService.setServiceUrl(httpServletRequest);
+        return urlShortenerService.generateShortUrl(longUrl);
     }
+
+    @GetMapping("{key}")
+    public ModelAndView forwardToLongUrl(@PathVariable("key") String key, HttpServletRequest httpServletRequest, HttpServletResponse resp) throws IOException {
+        String shortUrl = httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI().split(getMappingRequestPath)[0];
+        String longUrl = urlShortenerService.getLongUrl(shortUrl);
+        if(!(longUrl == null)){
+            urlShortenerService.increaseNumberOfVisit(shortUrl);
+            return new ModelAndView("redirect:"+longUrl);
+        }
+        else{
+            resp.sendError( HttpServletResponse.SC_NOT_FOUND );
+            return null;
+        }
+    }
+
 }
