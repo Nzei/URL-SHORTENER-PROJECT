@@ -56,3 +56,4 @@ hs_err_pid*
 /.mvn/wrapper/
 /mvnw.cmd
 /mvnw
+/data/
