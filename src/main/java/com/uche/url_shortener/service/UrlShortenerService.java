@@ -1,6 +1,6 @@
 package com.uche.url_shortener.service;
 
-import com.uche.url_shortener.dao.ShortenerMappings;
+import com.uche.url_shortener.dao.ShortenerMapping;
 import com.uche.url_shortener.model.Browsers;
 import com.uche.url_shortener.model.UrlShortenerResponse;
 import com.uche.url_shortener.repository.ShortenerRepository;
@@ -30,14 +30,16 @@ public class UrlShortenerService {
 
     public UrlShortenerResponse generateShortUrl (String longUrl) {
         UrlShortenerResponse urlShortenerResponse = new UrlShortenerResponse();
-        String shortUrl = serviceUrl + "/" + generateValidatedShortUrl(longUrl);
+        String shortUrl = generateValidatedShortUrl(longUrl);
         urlShortenerResponse.setShortUrl(shortUrl);
         urlShortenerResponse.setAgent(getBrowserAgent().toString());
-        ShortenerMappings shortenerMappings = new ShortenerMappings();
+        ShortenerMapping shortenerMappings = new ShortenerMapping();
         shortenerMappings.setLongUrl(longUrl);
         shortenerMappings.setShortUrl(shortUrl);
-        shortenerMappings.setBrowsers(getBrowserAgent().toString());
-        persist(shortenerMappings);
+        shortenerMappings.setBrowserName(getBrowserAgent().toString());
+        if (!shortenerRepository.existsByLongUrl(longUrl)) {
+            persist(shortenerMappings);
+        }
         return urlShortenerResponse;
     }
 
@@ -45,16 +47,17 @@ public class UrlShortenerService {
         return Utils.getBrowserName(httpServletRequest);
     }
 
-    private void persist (ShortenerMappings shortenerMappings) {
+    private void persist (ShortenerMapping shortenerMappings) {
         this.shortenerRepository.save(shortenerMappings);
     }
 
     private String generateValidatedShortUrl (String longUrl) {
-        String shortUrl = Utils.generateShortUrl(longUrl);
-        while (shortenerRepository.existsByShortUrl(shortUrl)) {
-            shortUrl = generateValidatedShortUrl(longUrl);
+        if (shortenerRepository.existsByLongUrl(longUrl)) return shortenerRepository.findShortenerMappingsByLongUrl(longUrl).getShortUrl();
+        String shortUrlKey = Utils.generateShortUrl(longUrl);
+        while (shortenerRepository.existsByShortUrl(serviceUrl + "/" +shortUrlKey)) {
+            shortUrlKey = generateValidatedShortUrl(longUrl);
         }
-        return shortUrl;
+        return serviceUrl + "/" +shortUrlKey;
     }
 
     public String getLongUrl (String shortUrl) {
@@ -67,10 +70,41 @@ public class UrlShortenerService {
     }
 
     public void increaseNumberOfVisit (String shortUrl) {
-        ShortenerMappings shortenerMappings = shortenerRepository.findShortenerMappingsByShortUrl(shortUrl);
+        ShortenerMapping shortenerMappings = shortenerRepository.findShortenerMappingsByShortUrl(shortUrl);
         shortenerMappings.setVisits(shortenerMappings.getVisits()+1);
+        Browsers currentVisitingBrowsers = getBrowserAgent();
+        if (currentVisitingBrowsers == Browsers.CHROME) {
+            shortenerMappings.setChrome(shortenerMappings.getChrome()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.FIREFOX) {
+            shortenerMappings.setFirefox(shortenerMappings.getFirefox()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.SAFARI) {
+            shortenerMappings.setSafari(shortenerMappings.getSafari()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.OPERA) {
+            shortenerMappings.setOpera(shortenerMappings.getOpera()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.EDGE) {
+            shortenerMappings.setEdge(shortenerMappings.getEdge()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.INTERNET_EXPLORER) {
+            shortenerMappings.setInternet_explorer(shortenerMappings.getInternet_explorer()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.POSTMAN) {
+            shortenerMappings.setPostman(shortenerMappings.getPostman()+1);
+        }
+        else if (currentVisitingBrowsers == Browsers.POWERSHELL) {
+            shortenerMappings.setPowershell(shortenerMappings.getPowershell()+1);
+        }
+        else {
+            shortenerMappings.setUnknown(shortenerMappings.getUnknown()+1);
+        }
         shortenerRepository.save(shortenerMappings);
     }
+
+
+
 
 
 }

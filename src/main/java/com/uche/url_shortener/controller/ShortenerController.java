@@ -24,15 +24,16 @@ public class ShortenerController {
 
     @PostMapping("${get.request.path}")
     public UrlShortenerResponse generateUrl (@RequestBody UrlShortenerRequest urlShortenerRequest, HttpServletRequest httpServletRequest) {
-        String longUrl = urlShortenerRequest.getLongUrl();
+        String longUrl = urlShortenerRequest.getLongUrl().trim();
         urlShortenerService.setServiceUrl(httpServletRequest);
         return urlShortenerService.generateShortUrl(longUrl);
     }
 
     @GetMapping("{key}")
     public ModelAndView forwardToLongUrl(@PathVariable("key") String key, HttpServletRequest httpServletRequest, HttpServletResponse resp) throws IOException {
-        String shortUrl = httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI().split(getMappingRequestPath)[0];
-        String longUrl = urlShortenerService.getLongUrl(shortUrl);
+        String shortUrl = (httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI().split(getMappingRequestPath)[0]).trim();
+        urlShortenerService.setServiceUrl(httpServletRequest);
+        String longUrl = urlShortenerService.getLongUrl(shortUrl).trim();
         if(!(longUrl == null)){
             urlShortenerService.increaseNumberOfVisit(shortUrl);
             return new ModelAndView("redirect:"+longUrl);
@@ -42,5 +43,7 @@ public class ShortenerController {
             return null;
         }
     }
+
+
 
 }
