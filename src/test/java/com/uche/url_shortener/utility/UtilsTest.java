@@ -10,16 +10,16 @@ class UtilsTest {
     void generateShortUrl() {
 
         // case insensitive
-        assertEquals("goe", Utils.generateShortUrl("https://www.google.com/search?hl=en&suge").substring(0,3));
+        assertEquals("goe", Utils.generateShortKey("https://www.google.com/search?hl=en&suge").substring(0,3));
 
         //case sensitive
-        assertEquals("gob", Utils.generateShortUrl("https://mail.google.com/mail/u/0/#inbox/FMfcgxwHMZQrPZzzhGCTsfNbFvdjKnvb").substring(0,3));
+        assertEquals("gob", Utils.generateShortKey("https://mail.google.com/mail/u/0/#inbox/FMfcgxwHMZQrPZzzhGCTsfNbFvdjKnvb").substring(0,3));
 
         //empty string
-        assertEquals("", Utils.generateShortUrl(""));
+        assertEquals("", Utils.generateShortKey(""));
 
         //two strings
-        assertEquals("uc",Utils.generateShortUrl("Uc"));
+        assertEquals("uc",Utils.generateShortKey("Uc"));
     }
 
     @Test

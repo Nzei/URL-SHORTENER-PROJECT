@@ -16,6 +16,7 @@ public interface ShortenerRepository extends JpaRepository<ShortenerMapping, Lon
 
     boolean existsByLongUrl(String longUrl);
 
-    @Query(value = "SELECT * FROM SHORTENER_MAPPINGS ORDER BY NO_OF_VISITS DESC LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM SHORTENER_MAPPING ORDER BY NO_OF_VISITS DESC LIMIT 3", nativeQuery = true)
     List<ShortenerMapping> findTopThreeMappings();
+
 }

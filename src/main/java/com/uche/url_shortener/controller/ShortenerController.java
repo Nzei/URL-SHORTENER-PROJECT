@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api") //Entry point
 public class ShortenerController {
     @Value("${get.request.path}")
     String getMappingRequestPath;
@@ -23,27 +23,25 @@ public class ShortenerController {
 
 
     @PostMapping("${get.request.path}")
-    public UrlShortenerResponse generateUrl (@RequestBody UrlShortenerRequest urlShortenerRequest, HttpServletRequest httpServletRequest) {
+    public UrlShortenerResponse generateUrl(@RequestBody UrlShortenerRequest urlShortenerRequest, HttpServletRequest httpServletRequest) {
         String longUrl = urlShortenerRequest.getLongUrl().trim();
-        urlShortenerService.setServiceUrl(httpServletRequest);
+        urlShortenerService.setServletRequest(httpServletRequest);
         return urlShortenerService.generateShortUrl(longUrl);
     }
 
     @GetMapping("{key}")
     public ModelAndView forwardToLongUrl(@PathVariable("key") String key, HttpServletRequest httpServletRequest, HttpServletResponse resp) throws IOException {
-        String shortUrl = (httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI().split(getMappingRequestPath)[0]).trim();
-        urlShortenerService.setServiceUrl(httpServletRequest);
+        String shortUrl = (httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI()).trim();
+        urlShortenerService.setServletRequest(httpServletRequest);
         String longUrl = urlShortenerService.getLongUrl(shortUrl).trim();
-        if(!(longUrl == null)){
+        if (!(longUrl == null)) {
             urlShortenerService.increaseNumberOfVisit(shortUrl);
-            return new ModelAndView("redirect:"+longUrl);
-        }
-        else{
-            resp.sendError( HttpServletResponse.SC_NOT_FOUND );
+            return new ModelAndView("redirect:" + longUrl);
+        } else {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
     }
-
 
 
 }

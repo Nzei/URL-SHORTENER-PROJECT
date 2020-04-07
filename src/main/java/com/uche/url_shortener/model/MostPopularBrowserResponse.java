@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class MostBrowserCreationsRequestResponse {
-    List<BrowserCreationRequest> browserCreationRequests;
+public class MostPopularBrowserResponse {
 
+    List<MostPopularBrowsers> mostPopularBrowsers;
 }

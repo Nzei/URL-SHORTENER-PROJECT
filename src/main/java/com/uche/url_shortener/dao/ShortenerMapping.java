@@ -21,37 +21,37 @@ public class ShortenerMapping {
     private String longUrl;
 
     @Column(name = "no_of_visits")
-    private Long visits=0L;
+    private Long visits = 0L;
 
     @Column(name = "user_agent")
     private String browserName;
 
     @Column(name = "Chrome")
-    private Long chrome=0L;
+    private Long chrome = 0L;
 
     @Column(name = "Firefox")
-    private Long firefox=0L;
+    private Long firefox = 0L;
 
     @Column(name = "Safari")
-    private Long safari=0L;
+    private Long safari = 0L;
 
     @Column(name = "Opera")
-    private Long opera=0L;
+    private Long opera = 0L;
 
     @Column(name = "Edge")
-    private Long edge=0L;
+    private Long edge = 0L;
 
     @Column(name = "Internet_Explorer")
-    private Long internet_explorer=0L;
+    private Long internet_explorer = 0L;
 
     @Column(name = "Postman")
-    private Long postman=0L;
+    private Long postman = 0L;
 
     @Column(name = "Powershell")
-    private Long powershell=0L;
+    private Long powershell = 0L;
 
     @Column(name = "Unknown_agents")
-    private Long unknown=0L;
+    private Long unknown = 0L;
 
     public ShortenerMapping() {
     }

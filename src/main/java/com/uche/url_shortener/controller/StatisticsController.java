@@ -1,6 +1,7 @@
 package com.uche.url_shortener.controller;
 
 import com.uche.url_shortener.model.MostBrowserCreationsRequestResponse;
+import com.uche.url_shortener.model.MostPopularBrowserResponse;
 import com.uche.url_shortener.model.MostVisitedLinkResponse;
 import com.uche.url_shortener.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,19 @@ public class StatisticsController {
     private StatisticsService statisticsService;
 
     @GetMapping("/most_visits")
-    public MostVisitedLinkResponse getMostVisitedSites () {
+    public MostVisitedLinkResponse getMostVisitedSites() {
         return statisticsService.getMostVisitedLinks();
     }
 
-    @GetMapping("/most_created_links")
-    public MostBrowserCreationsRequestResponse getMostCreationResponse () {
+    @GetMapping("/browser_most_created_links")
+    public MostBrowserCreationsRequestResponse getMostCreationResponse() {
         return statisticsService.getMostBrowserCreationRequest();
+
     }
+
+    @GetMapping("/most_popular_browsers")
+    public MostPopularBrowserResponse getMostPopularBrowser() {
+        return statisticsService.getMostPopularBrowsers();
+    }
+
 }
