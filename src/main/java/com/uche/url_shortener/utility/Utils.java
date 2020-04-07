@@ -12,6 +12,7 @@ public class Utils {
 
     /**
      * A method to generate short key using the first 2 letters, last letter and a random 4 digit number where applicable
+     *
      * @param longUrl
      * @return shortKey
      */
@@ -34,6 +35,7 @@ public class Utils {
 
     /**
      * A method to extract the website url excluding the default format 'http://' and 'www'  url inputted
+     *
      * @param websiteName
      * @return Website url
      */
@@ -127,6 +129,7 @@ public class Utils {
 
     /**
      * A method to capitalize the first letter of input string
+     *
      * @param entry
      * @return String with only first letter capitalized
      */

@@ -17,6 +17,7 @@ public class StatisticsService {
 
     /**
      * A method that fetches the links with the most visits
+     *
      * @return MostVisitedLinkResponse
      */
     public MostVisitedLinkResponse getMostVisitedLinks() {
@@ -37,6 +38,7 @@ public class StatisticsService {
 
     /**
      * A method that fetches the top 3 browsers used in creating short urls
+     *
      * @return MostBrowserCreationsRequestResponse
      */
     public MostBrowserCreationsRequestResponse getMostBrowserCreationRequest() {
@@ -67,6 +69,7 @@ public class StatisticsService {
 
     /**
      * A method that fetches the most popular browsers
+     *
      * @return
      */
     public MostPopularBrowserResponse getMostPopularBrowsers() {

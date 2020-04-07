@@ -32,6 +32,7 @@ public class UrlShortenerService {
 
     /**
      * A method to generate the short url form the given long url and returns it in the 'UrlShortenerResponse'
+     *
      * @param longUrl
      * @return UrlShortenerResponse
      */
@@ -62,6 +63,7 @@ public class UrlShortenerService {
     /**
      * A method to generated a validated short key and returns it in a desired url format
      * It checks for existing long urls before creating new short keys and ensures that no two different url formats have the same short url
+     *
      * @param longUrl
      * @return short url
      */
