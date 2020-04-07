@@ -15,7 +15,7 @@
     <description>url shortener that shortens long urls and maps it to short urls</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
     </properties>
 
     <dependencies>
