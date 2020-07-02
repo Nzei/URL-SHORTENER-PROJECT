@@ -16,7 +16,7 @@ public class StatisticsService {
 
 
     /**
-     * A method that fetches the links with the most visits
+     * A method that fetches the top 3 links with the most visits
      *
      * @return MostVisitedLinkResponse
      */
@@ -61,6 +61,7 @@ public class StatisticsService {
             browserCreationRequest.setNumberOfLinks(entry.getValue());
             browserCreationRequests.add(browserCreationRequest);
         }
+
         MostBrowserCreationsRequestResponse mostBrowserCreationsRequestResponse = new MostBrowserCreationsRequestResponse();
         mostBrowserCreationsRequestResponse.setBrowserCreationRequests(browserCreationRequests);
         return mostBrowserCreationsRequestResponse;
@@ -104,6 +105,7 @@ public class StatisticsService {
             mostPopularBrowsers.setNumberOfVisits(entry.getValue());
             listOfMostPopularBrowsers.add(mostPopularBrowsers);
         }
+
         listOfMostPopularBrowsers.sort(new MostPopularBrowsersComparator());
         MostPopularBrowserResponse listOfMostPopularBrowser = new MostPopularBrowserResponse();
         listOfMostPopularBrowser.setMostPopularBrowsers(listOfMostPopularBrowsers);
@@ -123,4 +125,6 @@ public class StatisticsService {
             }
         }
     }
+
+
 }

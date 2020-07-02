@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api") //Entry point
-public class ShortenerController {
+public class ShortenerController  {
     @Value("${get.request.path}")
     String getMappingRequestPath;
 
@@ -33,7 +33,7 @@ public class ShortenerController {
     public ModelAndView forwardToLongUrl(@PathVariable("key") String key, HttpServletRequest httpServletRequest, HttpServletResponse resp) throws IOException {
         String shortUrl = (httpServletRequest.getHeader("host") + httpServletRequest.getRequestURI()).trim();
         urlShortenerService.setServletRequest(httpServletRequest);
-        String longUrl = urlShortenerService.getLongUrl(shortUrl).trim();
+        String longUrl = urlShortenerService.getLongUrl(shortUrl);
         if (!(longUrl == null)) {
             urlShortenerService.increaseNumberOfVisit(shortUrl);
             return new ModelAndView("redirect:" + longUrl);

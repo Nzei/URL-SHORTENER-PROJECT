@@ -17,9 +17,10 @@ public class Utils {
      * @return shortKey
      */
     public static String generateShortKey(String longUrl) {
+        if(longUrl == null) return "";
         longUrl = getWebsiteName(longUrl);
         if (longUrl.length() <= 2) {
-            return longUrl.length() == 2 ? longUrl.toLowerCase() : "";
+            return longUrl.toLowerCase();
         }
 
         String shortUrl = "";
@@ -35,6 +36,7 @@ public class Utils {
 
     /**
      * A method to extract the website url excluding the default format 'http://' and 'www'  url inputted
+     * http://www.google.com returns the string 'google.com'
      *
      * @param websiteName
      * @return Website url

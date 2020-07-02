@@ -83,7 +83,7 @@ public class UrlShortenerService {
             return null;
         }
         String longUrl = shortenerRepository.findShortenerMappingsByShortUrl(shortUrl).getLongUrl();
-        return longUrl;
+        return longUrl.trim();
     }
 
 
